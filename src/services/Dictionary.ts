@@ -1,12 +1,14 @@
+import { AxiosResponse } from 'axios'
 import { dictionaryAPI } from 'lib/dictionaryAPI'
+import { IWord } from 'models/Word'
 
-import { WordDefinitionResponse } from 'models/WordDefinition'
+import { IWordDefinition } from 'models/WordDefinition'
 
 const serviceURL: string = '/entries/en'
 
 export const Dictionary = {
-  findOne({ word = '' }: { word?: string }): Promise<WordDefinitionResponse> {
-    return dictionaryAPI.get<WordDefinitionResponse>(`${serviceURL}/${word}`)
+  findOne({ word = '' }: IWord): Promise<AxiosResponse<IWordDefinition[]>> {
+    return dictionaryAPI.get<IWordDefinition[]>(`${serviceURL}/${word}`)
   },
 }
 

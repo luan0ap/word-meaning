@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  background: rgb(255, 255, 255);
+  font-family: Inter, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.root {
+  overflow-x: hidden;
+}

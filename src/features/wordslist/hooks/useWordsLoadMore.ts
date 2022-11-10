@@ -1,11 +1,12 @@
 import { useLoadMore } from 'hooks/useQuery'
-import { WordResponse } from 'models/Word'
+import { IWord } from 'models/Word'
 import { Words as WordsService } from 'services/Words'
 
 export const useWordsLoadMore = () => {
-  return useLoadMore<WordResponse[]>({
+  return useLoadMore<IWord[]>({
     queryKey: ['wordslist'],
-    queryFn: ({ pageParam = 0 }) => WordsService.getAll({ params: { _page: pageParam } }),
+    queryFn: ({ pageParam = 1 }) =>
+      WordsService.getAll({ params: { _page: pageParam, _limit: 100 } }),
   })
 }
 export default useWordsLoadMore

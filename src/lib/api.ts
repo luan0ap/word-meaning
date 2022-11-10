@@ -7,10 +7,12 @@ export function api(axiosDefauls: AxiosRequestConfig) {
     get<TResponse>(
       url: string,
       config?: AxiosRequestConfig
-    ): Promise<TResponse> {
-      return axiosInstance
-        .get<TResponse>(url, config)
-        .then(({ data }: AxiosResponse) => data as TResponse)
+    ): Promise<AxiosResponse<TResponse>> {
+      return axiosInstance.get<TResponse>(url, config)
+    },
+
+    interceptors: {
+      ...axiosInstance.interceptors,
     },
   }
 }

@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { setItem, getItem } from 'utils/localStorage.js'
+import { setItem, getItem } from 'utils/localStorage'
 
 export const useLocalStorage = (key: string, defaultValue: any = []) => {
   const [state, setState] = useState(() => getItem(key, defaultValue))

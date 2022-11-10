@@ -1,38 +1,46 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react'
+import { QueryStatus } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
 
-import useLocalStorage from 'hooks/useLocalStorage.js'
-import { Dictionary as DictionaryService } from 'services/Dictionary.js'
-import { WordDefinitionResponse } from 'models/WordDefinition'
+import useLocalStorage from 'hooks/useLocalStorage'
+import { Dictionary as DictionaryService } from 'services/Dictionary'
+import { IWordDefinition } from 'models/WordDefinition'
 import { useFetch } from 'hooks/useQuery'
+import { IWord } from 'models/Word'
 
 const useFavoriteWord = () => {
   const [storage, setStorage] = useLocalStorage('@word-meaning/favorites')
 
   return {
-    add({ word = '' } = { word: '' }): void {
-      setStorage([...storage, word])
+    add(item: IWord): void {
+      setStorage([...storage, item])
     },
 
-    remove({ word = '' } = { word: '' }): void {
-      setStorage(storage.filter((w: string) => w !== word))
+    remove({ id }: IWord): void {
+      setStorage(storage.filter((saved: IWord) => saved.id !== id))
     },
 
-    has({ word = '' } = { word: '' }): boolean {
-      return storage.includes(word)
+    has({ id }: IWord): boolean {
+      return storage.some((saved: IWord) => saved.id === id)
     },
 
-    getAll(): string[] {
+    getAll(): IWord[] {
       return storage
     },
   }
 }
 
 interface WordsContextInterface {
-  favoriteWord: object
-  selectedWord: string
-  setSelectedWord: React.Dispatch<React.SetStateAction<string>>
-  fetchWordDefinitionStatus: 'error' | 'success' | 'loading'
-  wordDefinition: WordDefinitionResponse | undefined
+  favoriteWord: {
+    add(item: IWord): void
+    remove({ id }: IWord): void
+    has({ id }: IWord): boolean
+    getAll(): IWord[]
+  }
+  selectedWord: IWord
+  setSelectedWord: React.Dispatch<React.SetStateAction<IWord>>
+  fetchWordDefinitionStatus: QueryStatus
+  wordDefinition: AxiosResponse<IWordDefinition[]> | undefined
 }
 
 const WordsContext = createContext({} as WordsContextInterface)
@@ -43,20 +51,22 @@ interface Props {
 
 const WordsProvider = ({ children }: Props) => {
   const favoriteWord = useFavoriteWord()
-  const [selectedWord, setSelectedWord] = useState('')
+  const [selectedWord, setSelectedWord] = useState({} as IWord)
 
   const {
     refetch,
     data: wordDefinition,
     status: fetchWordDefinitionStatus,
-  } = useFetch<WordDefinitionResponse>({
-    queryKey: ['word-definition', selectedWord],
-    queryFn: () => DictionaryService.findOne({ word: selectedWord }),
+  } = useFetch<IWordDefinition[]>({
+    queryKey: ['word-definition'],
+    queryFn: () => DictionaryService.findOne(selectedWord),
     enabled: false,
   })
 
   useEffect(() => {
-    refetch()
+    if (selectedWord) {
+      refetch()
+    }
   }, [refetch, selectedWord])
 
   return (

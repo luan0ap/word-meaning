@@ -15,7 +15,7 @@ export interface Meaning {
   definitions: Definition[]
 }
 
-export interface WordDefinitionResponse {
+export interface IWordDefinition {
   word: string
   phonetic: string
   phonetics: Phonetic[]
