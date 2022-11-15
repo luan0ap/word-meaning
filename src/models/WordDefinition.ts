@@ -5,7 +5,7 @@ export interface Phonetic {
 
 export interface Definition {
   definition: string
-  example: string
+  example?: string
   synonyms: string[]
   antonyms: string[]
 }

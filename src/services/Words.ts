@@ -1,7 +1,7 @@
-import { AxiosResponse } from 'axios'
-import { localAPI } from 'lib/localAPI'
-
+import { IApiResponse } from 'lib/api'
 import { IWord } from 'models/Word'
+
+import { localAPI } from 'lib/localAPI'
 
 const serviceURL: string = '/words'
 
@@ -10,7 +10,7 @@ export const Words = {
     params = { _page: 1, _limit: 15 },
   }: {
     params?: { _page: number; _limit?: number }
-  }): Promise<AxiosResponse<IWord[]>> {
+  }): Promise<IApiResponse<IWord[]>> {
     return localAPI.get<IWord[]>(serviceURL, { params })
   },
 }

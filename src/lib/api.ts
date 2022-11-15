@@ -1,5 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
+export interface IApiResponse<T = any, D = any> extends AxiosResponse<T, D> {}
+
 export function api(axiosDefauls: AxiosRequestConfig) {
   const axiosInstance = axios.create(axiosDefauls)
 
@@ -7,7 +9,7 @@ export function api(axiosDefauls: AxiosRequestConfig) {
     get<TResponse>(
       url: string,
       config?: AxiosRequestConfig
-    ): Promise<AxiosResponse<TResponse>> {
+    ): Promise<IApiResponse<TResponse>> {
       return axiosInstance.get<TResponse>(url, config)
     },
 

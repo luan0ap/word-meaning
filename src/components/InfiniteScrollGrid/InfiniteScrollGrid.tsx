@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-
 import { Grid, GridProps } from '@chakra-ui/react'
 import { useInView } from 'react-intersection-observer'
 
@@ -10,7 +9,7 @@ export interface InfiniteScrollGridProps extends GridProps {
 export function InfiniteScrollGrid({
   onViewChange = () => void 0,
   children,
-  maxHeight = 'md',
+  maxHeight = 'xl',
   templateColumns = ['repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)'],
   gap = 0,
   ...props

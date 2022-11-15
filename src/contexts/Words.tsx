@@ -1,12 +1,14 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react'
 import { QueryStatus } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
+
+import { IWordDefinition } from 'models/WordDefinition'
+import { IWord } from 'models/Word'
+import { IApiResponse } from 'lib/api'
+
+import { Dictionary as DictionaryService } from 'services/Dictionary'
 
 import useLocalStorage from 'hooks/useLocalStorage'
-import { Dictionary as DictionaryService } from 'services/Dictionary'
-import { IWordDefinition } from 'models/WordDefinition'
 import { useFetch } from 'hooks/useQuery'
-import { IWord } from 'models/Word'
 
 const useFavoriteWord = () => {
   const [storage, setStorage] = useLocalStorage('@word-meaning/favorites')
@@ -40,7 +42,7 @@ interface WordsContextInterface {
   selectedWord: IWord
   setSelectedWord: React.Dispatch<React.SetStateAction<IWord>>
   fetchWordDefinitionStatus: QueryStatus
-  wordDefinition: AxiosResponse<IWordDefinition[]> | undefined
+  wordDefinition: IApiResponse<IWordDefinition[]> | undefined
 }
 
 const WordsContext = createContext({} as WordsContextInterface)
